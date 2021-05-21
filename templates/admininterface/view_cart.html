@@ -1,0 +1,189 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Siparişler</title>
+<script src="{% static 'javascript/view_cart.js' %}"></script>
+{% endblock header%}
+{% block content %}
+    <br><h1 class="text-center">Siparişler</h1><hr>
+    <div class="row">
+        {%for cart in carts%}
+        {%if cart.status == 1%}
+              <div id="card{{cart.id}}" class="card-body">
+                <button id="main-{{cart.id}}"class="btn btn-block btn-warning" type="button" data-toggle="collapse" data-target="#collapseExample-{{cart.id}}" aria-expanded="false" aria-controls="collapseExample">
+                  {{cart.customer}} | {{cart.created_on}}</button>
+                  <div class="collapse" id="collapseExample-{{cart.id}}">
+                    <div class="card card-body">
+                      <p>Telefon: {{cart.number}}</p>
+                      <p>Adres:</p>
+                      <p>{{cart.address}}</p>
+                      {% if cart.note%}
+                      <p>Not:</p>
+                      <p>{{cart.note}}</p>
+                      {% endif%}
+                      <button id="allow-{{cart.id}}" type="button" class="allow btn btn-info">Değişiklik Yap</button>
+                      <table class="table" id="table-{{cart.id}}">
+                        {% for item in cart.cartitem_set.all %}
+                        <tr class="rows">
+                          <td class="product_name large">{{item.product}}</td>
+                          <td id="price-{{item.id}}" class="price large">{{item.total_price}} TL</td>
+                          <td >
+                            <button id="minus-{{item.id}}+{{cart.id}}" type="button" class="change btn btn-primary btn-sm" disabled>-</button>
+                          </td>
+                          <td id="quantity-{{item.id}}">{{item.quantity}}</td>
+                          <td >
+                            <button id="plus-{{item.id}}+{{cart.id}}" type="button" class="change btn btn-primary btn-sm" disabled>+</button>
+                          </td>
+                          <td class="small">
+                            <button id="delete-{{item.id}}+{{cart.id}}" type="button" class="delete btn btn-danger btn-sm" disabled>Sil</button>
+                          </td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                          <th>Toplam:</th>
+                          <th id="totalsum{{cart.id}}"></th>
+                          <th>
+                          </th>
+                          <th></th>
+                          <th></th>
+                          <th><button id="add-{{cart.id}}" type="button" class="add btn btn-outline-success" data-toggle="modal" data-target="#addProduct{{cart.id}}" disabled>Ekle</button></th>
+                        </tr>
+                      </table>
+                      <button id="submit-{{cart.id}}-{{cart.status}}" type="button" class="btn btn-outline-primary btn-block submit_main" data-toggle="modal" data-target=".courier">Kuryeye Teslim Et</button>
+                    </div>
+                  </div>
+                  </div>
+                  <div class="modal fade courier" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                      <div class="modal-content">
+                        <div class="modal-header">
+                          <h6 class="modal-title">KURYE SEÇ!</h6>
+                        </div>
+                        <div class="modal-body">
+                        <select style="width:100%" id="select_courier">
+                        {% for courier in couriers %}
+                            <option value="{{courier}}">{{courier}}</option>
+                        {% endfor%}
+                        </select>
+                        </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                        <button type="button" id="submit-{{cart.id}}+{{cart.status}}" class="submit btn btn-primary">Onayla</button>
+                      </div>
+                      </div>
+                    </div>
+                  </div>
+                {%elif cart.status == 2%}
+                <div id="card{{cart.id}}" class="card-body">
+                <button id="main-{{cart.id}}"class="btn btn-block btn-primary" type="button" data-toggle="collapse" data-target="#collapseExample{{cart.id}}" aria-expanded="false" aria-controls="collapseExample">
+                  <span class="blink_me">{{cart.customer}} | {{cart.created_on}}</span></button>
+                  <div class="collapse" id="collapseExample{{cart.id}}">
+                    <div class="card card-body">
+                      <p>Telefon: {{cart.number}}</p>
+                      <p>Adres:</p>
+                      <p>{{cart.address}}</p>
+                      {% if cart.note%}
+                      <p>Not:</p>
+                      <p>{{cart.note}}</p>
+                      {% endif%}
+                      <table class="table">
+                        {% for item in cart.cartitem_set.all %}
+                        <tr>
+                          <td class="large">{{item.product}}</td>
+                          <td id="price-{{item.id}}" class="price large">{{item.total_price}} TL</td>
+                          <td id="quantity-{{item.id}}" class="large">{{item.quantity}} Adet</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                          <th>Toplam:</th>
+                          <th id="totalsum{{cart.id}}">0 TL</th>
+                          <th></th>
+                        </tr>
+                      </table>
+                      <button id="submit-{{cart.id}}+{{cart.status}}" type="button" class="submit btn btn-outline-primary btn-block">Teslim Edildi</button>
+                      <br><h6 style="text-align:right">Kurye:<span>{{cart.courier}}</span></h6>
+                    </div>
+                  </div>
+                  </div>
+                {%elif cart.status == 3%}
+                <div id="card{{cart.id}}" class="card-body">
+                <button id="main-{{cart.id}}"class="btn btn-block btn-success" type="button" data-toggle="collapse" data-target="#collapseExample{{cart.id}}" aria-expanded="false" aria-controls="collapseExample">
+                  <span class="blink_me">{{cart.customer}} | {{cart.created_on}}</span></button>
+                  <div class="collapse" id="collapseExample{{cart.id}}">
+                    <div class="card card-body">
+                      <p>Telefon: {{cart.number}}</p>
+                      <p>Adres:</p>
+                      <p>{{cart.address}}</p>
+                      {% if cart.note%}
+                      <p>Not:</p>
+                      <p>{{cart.note}}</p>
+                      {% endif%}
+                      <table class="table">
+                        {% for item in cart.cartitem_set.all %}
+                        <tr>
+                          <td class="large">{{item.product}}</td>
+                          <td id="price-{{item.id}}" class="price large">{{item.total_price}} TL</td>
+                          <td id="quantity-{{item.id}}" class="large">{{item.quantity}} Adet</td>
+                        </tr>
+                        {% endfor %}
+                        <tr>
+                          <th>Toplam:</th>
+                          <th id="totalsum{{cart.id}}">0 TL</th>
+                          <th></th>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+                  {%endif%}
+          <div class="modal fade" id="addProduct{{cart.id}}" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+              <div class="modal-content">
+                <div class="modal-body">
+                  <table style="width:100%;table-layout: fixed;" class="table" id="add_table-{{cart.id}}">
+                    <tr>
+                      <th style="width:7vw;">Ürün</th>
+                      <th style="text-align:center;width:7vw;">Birim Fiyat</th>
+                      <th></th>
+                      <th style="text-align:center">Adet</th>
+                      <th></th>
+                    </tr>
+                    {%for product in products%}
+                    <tr class="add_row">
+                      <td style="" class="add_product_name">{{product.name}}</td>
+                      <td class="add_product_price"style="text-align:center;">{{product.price}} TL</td>
+                      <td><button id="minus-{{product.id}}_{{cart.id}}" style="float:right;" type="button" class="add_change btn btn-success btn-sm">-</button></td>
+                      <td class="add_quantity" id="add_quantity-{{product.id}}_{{cart.id}}" style="text-align:center">0</td>
+                      <td><button id="plus-{{product.id}}_{{cart.id}}" type="button" class="add_change btn btn-success btn-sm">+</button></td>
+                    </tr>
+                    {%endfor%}
+                  </table>
+
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+                  <button type="button" id="add_add-{{cart.id}}" class="add_add btn btn-primary" data-dismiss="modal">Ekle</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          {%endfor%}
+        </div>
+
+    <style>
+      .large{
+        width:10vw;
+      }
+      .small{
+        width:3vw;
+        text-align:center
+      }
+      .row {
+        display: flex;
+      }
+
+      .card-body {
+        flex: 50%;
+      }
+    </style>
+{% endblock content %}

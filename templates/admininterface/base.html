@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en" dir="ltr">
+	<head>
+		<meta charset="utf-8">
+			<script src="https://code.jquery.com/jquery-3.6.0.js" integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk=" crossorigin="anonymous"></script>
+			<link rel="stylesheet" href="{%static 'css/main.css'%}">
+			<script src="{% static 'javascript/main.js' %}"></script>
+			<script src="{% static 'javascript/base.js' %}"></script>
+			<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.1/css/all.css" integrity="sha384-gfdkjb5BdAXd+lj+gudLWI+BXq4IuLW5IT+brZEZsLFm++aCMlF1V92rMkPaX4PP" crossorigin="anonymous">
+			<link href="https://fonts.googleapis.com/css2?family=Architects+Daughter&display=swap" rel="stylesheet">
+			<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+			<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+			<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+			{% block header %}
+			{% endblock %}
+	</head>
+
+	<body>
+		<div id="mySidenav" class="sidenav">
+		  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+			<a style="text-decoration:none" href="{% url 'admininterface:home'%}">ANASAYFA</a>
+		  <a style="text-decoration:none" href="{% url 'admininterface:sell' %}">MASALAR</a>
+		  <a style="text-decoration:none" href="{% url 'admininterface:view_cart'%}">SİPARİŞLERİ GÖR</a>
+		  <a style="text-decoration:none" href="{% url 'admininterface:products'%}">ÜRÜN EKLE/ÇIKAR/DEĞİŞTİR</a>
+		  <a style="text-decoration:none" href="{% url 'admininterface:history' %}">GEÇMİŞ</a>
+		</div>
+		<div onclick="openNav()" class="vl"></div>
+		<div class="container">
+		{% block content %}
+		{% endblock %}
+		</div>
+	</body>
+</html>
+<style>
+.vl {
+	position: fixed ;
+	display: :flex;
+  border-left: 5vw solid #1a508b;
+  height: 100%;
+}
+
+</style>

@@ -1,0 +1,104 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>{{table.name}}</title>
+<script src="{% static 'javascript/table.js' %}"></script>
+{% endblock header%}
+
+{% block content %}
+<br><h1 class="text-center">{{table.name}}</h1><br>
+<table class="table general" style="table-layout: fixed;">
+{% for product in products%}
+<tr class="rows">
+  <td class="product_name large">{{product.product}}</td>
+  <td class="price large">{{product.total_price}} TL</td>
+  <td >
+    <button id="minus" type="button" class="change btn btn-primary btn-sm" disabled>-</button>
+  </td>
+  <td class="quantity" class="small">{{product.quantity}}</td>
+  <td >
+    <button id="plus" type="button" class="change btn btn-primary btn-sm" disabled>+</button>
+  </td>
+  <td class="small">
+    <button type="button" class="delete btn btn-danger btn-sm" disabled>Sil</button>
+  </td>
+</tr>
+{% endfor%}
+<tr>
+  <th>Toplam:</th>
+  <th id="totalsum"></th>
+  <th>
+  </th>
+  <th></th>
+  <th></th>
+  <th><button id="add" type="button" class="add btn btn-outline-success" data-toggle="modal" data-target="#addProduct" disabled>Ekle</button></th>
+</tr>
+</table>
+<button type="button" id="{{table.id}}" class="btn btn-block btn-warning">Değişiklik Yap</button>
+<button type="button" id="payment" class="btn btn-block btn-info" data-toggle="modal" data-target="#confirmation">Ödemeyi al</button>
+
+<div id="confirmation" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Ödemeyi Al</h5>
+      </div>
+      <div class="modal-body">
+        <table class="table">
+          <tr>
+            <td>Ödenecek Tutar</td>
+            <td id="last"></td>
+          </tr>
+          <tr>
+            <td>Ödeme Yöntemi</td>
+            <td><select class="payment_method">
+              <option value="cash" selected>Nakit</option>
+              <option value="cart">Kredi Kartı</option>
+            </select></td>
+          </tr>
+        </table>
+      </div>
+      <div class="modal-footer">
+        <button id="finish" name="{{table.id}}" type="button" class="btn btn-primary">Onayla</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<table hidden id="print_area">
+
+</table>
+
+<div class="modal fade" id="addProduct" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-body">
+        <table style="width:100%;table-layout: fixed;" class="table" id="add_table">
+          <tr>
+            <th style="width:7vw;">Ürün</th>
+            <th style="text-align:center;width:7vw;">Birim Fiyat</th>
+            <th></th>
+            <th style="text-align:center">Adet</th>
+            <th></th>
+          </tr>
+          {%for product in realproducts%}
+          <tr class="add_row">
+            <td style="width:7vw;" class="add_product_name" id="add_product_name-{{product.id}}">{{product.name}}</td>
+            <td id="add_price-{{product.id}}" style="text-align:center;width:7vw;">{{product.price}} TL</td>
+            <td><button id="minus-{{product.id}}" style="float:right" type="button" class="add_change btn btn-success btn-sm">-</button></td>
+            <td class="add_quantity" id="add_quantity-{{product.id}}" style="text-align:center">0</td>
+            <td><button id="plus-{{product.id}}" type="button" class="add_change btn btn-success btn-sm">+</button></td>
+          </tr>
+          {%endfor%}
+        </table>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+        <button type="button" id="add_add" class="btn btn-primary" data-dismiss="modal">Ekle</button>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

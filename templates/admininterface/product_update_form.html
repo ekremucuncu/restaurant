@@ -1,0 +1,15 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Ürün Değiştir</title>
+<script src="{% static 'javascript/view_cart.js' %}"></script>
+{% endblock header%}
+
+{% block content %}
+    <br><h1 class="text-center">Ürün Değiştir</h1><hr>
+    <form method="post">
+      {% csrf_token %}
+      {{form.as_p}}
+      <button type="submit" class="btn btn-outline-primary btn-lg btn-block"value="Save">Değiştir</button>
+    </form>
+    {% endblock %}

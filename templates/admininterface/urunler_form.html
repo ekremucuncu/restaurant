@@ -1,0 +1,86 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Ürünler</title>
+<script src="{% static 'javascript/view_cart.js' %}"></script>
+{% endblock header%}
+
+{% block content %}
+<br><h1 class="text-center">Ürünler</h1><hr>
+<button type="button" class="ekle btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal" data-whatever="@mdo">ÜRÜN EKLE</button><br><br>
+<table style="width:100%">
+  <tr>
+    <th>Ürün</th>
+    <th>Fiyat</th>
+    <th>Durumu</th>
+		<th>Resim</th>
+    <th>Değiştir/Sil</th>
+  </tr>
+	{% for i in products%}
+	<tr>
+		<td>{{i.name}}</td>
+		<td>{{i.price}} ₺</td>
+    {% if i.status%}
+    <td>Var</td>
+    {%else%}
+    <td>Yok</td>
+    {%endif%}
+		<td><img src="{{ i.image.url }}"</td>
+		<td ><a href="{% url 'admininterface:change' pk=i.pk %}"><button id="change" type="button" class="btn btn-success">Değiştir</button></a>
+      <a href="{% url 'admininterface:delete' pk=i.pk %}"><button class="btn btn-danger" type="button" name="button">Sil</button></a></td>
+	</tr>
+	{% endfor %}
+</table>
+
+
+
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+ <div class="modal-dialog" role="document">
+	 <div class="modal-content">
+		 <div class="modal-body">
+			 <form method="post" style="margin-top: 1.3em;" enctype="multipart/form-data">
+				 {% csrf_token %}
+         <label for="name">Ürün:</label>
+         <br>
+         <input type="text" name="name">
+				 <br><br>
+				 <label for="price">Fiyat:</label>
+				 <br>
+				 <input type="number" name="price">
+				 <br><br>
+				 <label for="image">Resim:</label>
+				 <br>
+				 <input type="file" name="image" accept="image/*">
+				 <br><br>
+				 <label for="status">Aktiv</label>
+				 <input type="checkbox" name="status">
+				 <div class="modal-footer">
+           <button type="submit" class="btn btn-secondary" data-dismiss="modal">Kapat</button>
+					 <button type="submit" class="btn btn-primary">Paylaş</button>
+				 </div>
+			 </form>
+		 </div>
+	 </div>
+ </div>
+</div>
+
+
+
+<style>
+ th, td {
+  border: 1px solid black;
+	border-collapse: collapse;
+  text-align:center;
+
+}
+img {
+	width:  100px !important;
+	height: 100px !important;
+	object-fit: fill;
+}
+.cevre{
+	border: None;
+}
+</style>
+
+{% endblock %}

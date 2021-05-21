@@ -1,0 +1,24 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Masalar</title>
+<script src="{% static 'javascript/sell.js' %}"></script>
+{% endblock header%}
+
+{% block content %}
+<br><h1 class="text-center">Masalar</h1><hr><br>
+    <button type="button" class="btn btn-success btn-block" data-toggle="collapse" data-target="#collapse" aria-expanded="false" aria-controls="collapseExample">Masa oluştur</button>
+    <div class="collapse" id="collapse">
+      <div class="card card-body">
+        <input autocomplete="off" id="name" class="text-center" type="text" placeholder="Masa ismi gir"><br>
+        <button id="create" class="btn btn-block btn-info" type="button">Onayla</button>
+      </div>
+    </div>
+      <div class="row text-center" style="margin-top:10vh">
+        {% for table in tables%}
+        <div style="margin:auto">
+          <button onclick="location.href='{% url "admininterface:table" pk=table.pk %}'" type="button" class="btn btn-outline-info" style="height:25vh;width:25vh;margin-bottom:5vh">{{table.name}}</button>
+        </div>
+        {% endfor%}
+      </div>
+{% endblock content%}

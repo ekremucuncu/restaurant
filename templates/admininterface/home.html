@@ -1,0 +1,103 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Yönetici</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>
+<script src="{% static 'javascript/home.js' %}"></script>
+
+{% endblock header%}
+
+{% block content %}
+
+  <br><h1 class="text-center">Admin Paneli</h1><hr>
+    <div style="margin-top:10vh; width: 30%;height: 50%; position: fixed; left:15vw">
+      <h3 class="text-center">Ürün sat</h3><br>
+      <div style="overflow:auto;height:90%">
+              <table style="width:100%;table-layout: fixed;" class="table" id="add_table">
+                <tr>
+                  <th style="width:7vw;">Ürün</th>
+                  <th style="text-align:center;width:7vw;">Birim Fiyat</th>
+                  <th></th>
+                  <th style="text-align:center">Adet</th>
+                  <th><button id="reset" type="button" class="btn btn-danger btn-sm">Sıfırla</button></th>
+                </tr>
+                {%for product in products%}
+                <tr class="add_row">
+                  <td style="width:7vw;" class="add_product_name">{{product.name}}</td>
+                  <td class="add_product_price"style="text-align:center;width:7vw;">{{product.price}} TL</td>
+                  <td><button id="minus-{{product.id}}" style="float:right" type="button" class="add_change btn btn-success btn-sm">-</button></td>
+                  <td class="add_quantity" id="add_quantity-{{product.id}}" style="text-align:center">0</td>
+                  <td><button id="plus-{{product.id}}" type="button" class="add_change btn btn-success btn-sm">+</button></td>
+                </tr>
+                {%endfor%}
+              </table>
+            </div>
+          <table style="width:100%;table-layout: fixed;" class="table">
+            <tr>
+              <th style="width:7vw;">Toplam:</th>
+              <th class ="price" style="text-align:center">0 TL</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+          </table>
+          <button type="button" id="show" data-toggle="modal" data-target="#orderModal" class="btn btn-warning btn-block">Siparişi Tamamla</button>
+    </div>
+
+    <div class="modal fade" id="orderModal" tabindex="-1" role="dialog" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Siparişi Tamamla</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body" id="print_area">
+            <table style="width:100%;table-layout: fixed;" class="table" id="order_table">
+              <tr id="row_head">
+                <th style="width:7vw;">Ürün</th>
+                <th style="text-align:center;width:7vw;">Birim Fiyat</th>
+                <th style="text-align:center">Adet</th>
+                <th style="text-align:center">Toplam Fiyat</th>
+              </tr>
+              <tr>
+                <td style="width:7vw;">Toplam:</td>
+                <td></td>
+                <td></td>
+                <td class ="price" style="text-align:center">0 TL</td>
+              </tr>
+            </table>
+            <select class="form-control pay_method">
+              <option value="cash">Nakit</option>
+              <option value="card">Kredi Kartı</option>
+            </select>
+          </div>
+          <div class="modal-footer">
+            <button type="button" id="cancel" class="btn btn-secondary" data-dismiss="modal">İptal</button>
+            <button id="order" type="button" class="btn btn-primary">Çıktı Al</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:10vh; width: 40%;height: 100%; position: fixed; right:5vw">
+      <canvas id="population-chart" data-url="{% url 'admininterface:population-chart' %}"></canvas><br><br><br>
+      <div style="border:1px solid black">
+        <br>
+        <div style="margin: auto;width:70%;height:10%">
+          <form >
+            <div class="form-group">
+              <h6 class="text-center">Kurye Ekle</h6><br>
+              <input autocomplete="off" type="text" class="form-control" id="name" placeholder="Ekrem Kemal Üçüncü">
+            </div>
+            <button id="courier_submit" type="button" class="btn btn-primary btn-block">Ekle</button>
+          </form>
+          <div>
+        </div>
+        </div>
+        <br>
+      </div>
+    </div>
+
+{% endblock %}

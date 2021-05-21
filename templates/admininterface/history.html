@@ -1,0 +1,64 @@
+{% extends 'admininterface/base.html' %}
+{%load static%}
+{% block header %}
+<title>Geçmiş</title>
+<script src="{% static 'javascript/history.js' %}"></script>
+{% endblock header%}
+
+{% block content %}
+<br><h1 class="text-center">Geçmiş</h1><hr>
+<br><br>
+<div style="margin:auto;width: 90%;">
+<h6>Filtre</h6>
+<input id="date1" style="margin-right:1vw" type="date">
+<input id="date2" style="margin-right:1vw" type="date">
+<select style="margin-right:1vw" id="product">
+  <option value="None">Ürün</option>
+  {% for product in products%}
+  <option value="{{product}}">{{product}}</option>
+  {% endfor%}
+</select>
+<select style="margin-right:1vw" id="customer">
+  <option value="None">Müşteri</option>
+  {% for customer in customers%}
+  <option value="{{customer}}">{{customer}}</option>
+  {% endfor%}
+</select>
+<select style="margin-right:1vw" id="courier">
+  <option value="None">Kurye</option>
+  {% for courier in couriers%}
+    <option value="{{courier}}">{{courier}}</option>
+  {% endfor%}
+</select><br>
+<input type="checkbox" id="cb" name="cb">
+<label for="cb">Tüm Tarihler</label>
+<button id="filter" style="margin-bottom:1vh" class="btn btn-primary btn-sm btn-block">Uygula</button>
+<button id="excel" class="btn btn-sm btn-block btn-outline-secondary">Excel'e Dönüştür</button>
+<a class="a" href="{% url 'admininterface:download'%}"><button class="btn btn-sm btn-block btn-success">İndir</button></a>
+</div>
+<br><br>
+<table class="table table-striped table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Ürün</th>
+      <th scope="col">Adet</th>
+      <th scope="col">Müşteri</th>
+      <th scope="col">Tarih</th>
+      <th scope="col">Ücret</th>
+      <th scope="col">Kurye</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for i in list%}
+    <tr class="rows">
+      <td class="product">{{i.product}}</td>
+      <td class="quantity">{{i.quantity}}</td>
+      <td class="customer">{{i.cart.customer}}</td>
+      <td class="created_on">{{i.created_on}}</td>
+      <td class="total_price">{{i.total_price}}</td>
+      <td class="courier">{{i.cart.courier}}</td>
+    </tr>
+    {% endfor%}
+  </tbody>
+</table>
+{% endblock content%}
